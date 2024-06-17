@@ -22,7 +22,7 @@ export const ListArticles = () => {
 
   return (
     <div className="articles-page-container">
-      <h3 id="articles-header">LIST ARTICLES</h3>
+      <h3 id="articles-header">ARTICLES</h3>
       <div className="query-controls">
         <p>PLACEHOLDER</p>
         <p>PLACEHOLDER</p>

@@ -29,6 +29,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 92vh;
 }
 
 .articles-page-container h3 {
@@ -100,4 +101,144 @@
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
+}
+
+.articles-section::-webkit-scrollbar {
+  width: 10px;
+}
+
+.articles-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.articles-section::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+.article-detail-container {
+  overflow-y: auto;
+  /* margin-top: 5em; */
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.article-detail-card {
+  padding: 50px, 50px, 0px, 50px;
+  margin-top: 0;
+}
+
+
+
+.article-detail-topic-info {
+  display: flex;
+  align-items: flex-start;
+}
+
+.profile-picture-container {
+  margin-right: 10px;
+}
+
+.article-detail-text-container {
+  margin-top: 25px;
+}
+
+
+#article-detail-img {
+  max-height: 200px;
+  max-width: 200px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+#article-detail-title {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+
+#article-detail-profile-picture {
+  height: 100px;
+  border: 1px solid black;
+  clip-path: circle();
+  object-fit:cover;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+#article-detail-profile-picture:hover {
+  cursor: pointer;
+}
+
+.author-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.votes-wrapper {
+  display: flex;
+}
+
+.votes-wrapper button:hover {
+  cursor: pointer;
+}
+
+#votes-text {
+  margin-right: 20px;
+}
+
+#upvote-button {
+  margin-right: 20px;
+  border: none;
+  background-color: white;
+}
+
+#downvote-button {
+  border: none;
+  background-color: white;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.comment-form p {
+  text-align: center;
+}
+
+#comment-input {
+  width: 600px;
+  max-width: 600px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.comment-card {
+  max-width: 600px;
+}
+
+.article-comments-container {
+  max-height: 176px; 
+  overflow-y: auto; 
+}
+
+.article-comments-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.article-comments-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.article-comments-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }

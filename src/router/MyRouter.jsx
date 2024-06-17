@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate} from "react-router-dom"
 import {useContext} from "react"
 import { UserContext } from "../context/UserContext"
-import {Home, ListArticles, ArticleDetail, PostArticle, UserList, User} from '../components/index'
+import {ListArticles, ArticleDetail, PostArticle, UserList, User} from '../components/index'
 
 
 export const MyRoutes = () => {
@@ -14,8 +14,7 @@ export const MyRoutes = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<ListArticles />} />
             <Route path="/articles" element={<ListArticles />} />
             <Route path="/articles/:article_id" element={< ArticleDetail />} />
             <Route path="/articles/post" element={< PostArticle />} />
