@@ -32,7 +32,7 @@ export const ArticleDetail = () => {
 
   const voteArticle = (inc_votes) => {
 
-
+    
 
   }
 
@@ -101,7 +101,7 @@ export const ArticleDetail = () => {
           ></textarea>
         </form>
       </div>
-
+        <ArticleComments />
     </div>
   );
 };
