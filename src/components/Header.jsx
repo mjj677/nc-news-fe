@@ -35,12 +35,13 @@ export const Header = () => {
           />{' '}
           Northitt
           </Navbar.Brand>
+          <div className="create-wrapper">
+          <Nav.Link href="/articles/post" className="justify-content-center create">+ CREATE</Nav.Link>
+          </div>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/home">HOME</Nav.Link>
               <Nav.Link href="/articles">ARTICLES</Nav.Link>
-              <Nav.Link href="/articles/post">MAKE A POST</Nav.Link>
               <Nav.Link href="/users">USERS</Nav.Link>
             </Nav>
           </Navbar.Collapse>

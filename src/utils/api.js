@@ -15,3 +15,19 @@ export const getRequest = (endpoint, params = {}) => {
       throw err;
     });
 };
+
+export const patchRequest = (endpoint, body) => {
+    return apiURL
+    .patch(endpoint, body)
+    .then((res) => {
+        if (res.status >= 200 && res.status < 300) {
+            return res.data;
+        } else {
+            throw new Error(`Request failed with status ${res.status}`);
+        }
+    })
+    .catch((err) => {
+        console.log("Error:", err)
+        throw err;
+    })
+}

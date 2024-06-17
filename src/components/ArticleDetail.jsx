@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRequest } from "../utils/api";
+import { getRequest, patchRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -12,6 +12,7 @@ export const ArticleDetail = () => {
   const [articleReceived, setArticleReceived] = useState({});
   const [articleAuthorInfo, setArticleAuthorInfo] = useState({});
   const [message, setMessage] = useState("");
+  const [userVote, setUserVote] = useState(0);
 
   useEffect(() => {
     const fetchArticleAndAuthor = async () => {
@@ -30,11 +31,20 @@ export const ArticleDetail = () => {
     fetchArticleAndAuthor();
   }, []);
 
-  const voteArticle = (inc_votes) => {
-
-    
-
-  }
+  const voteArticle = async (inc_votes) => {
+    try {
+      const body = { inc_votes };
+      const { patched_article } = await patchRequest(
+        `/articles/${article_id}/`,
+        body
+      );
+      setArticleReceived(patched_article);
+      setUserVote(inc_votes === userVote ? 0 : inc_votes);
+    } catch (err) {
+      setMessage("Error locating article.");
+      console.log("Error:", err);
+    }
+  };
 
   const readableDate = ConvertDate(articleReceived.article_id);
 
@@ -81,10 +91,22 @@ export const ArticleDetail = () => {
               VOTES: {articleReceived.votes}
             </Card.Text>
             <Card.Text>
-              <button onClick={() => voteArticle(1)} id="upvote-button">👍</button>
+              <button
+                onClick={() => voteArticle(userVote === 1 ? 0 : 1)}
+                id="upvote-button"
+                disabled={userVote === 1}
+              >
+                👍
+              </button>
             </Card.Text>
             <Card.Text>
-              <button onClick={() => voteArticle(-1)} id="downvote-button">👎</button>
+              <button
+                onClick={() => voteArticle(userVote === -1 ? 0 : -1)}
+                id="downvote-button"
+                disabled={userVote === -1}
+              >
+                👎
+              </button>
             </Card.Text>
           </div>
         </Card.Body>
@@ -101,7 +123,7 @@ export const ArticleDetail = () => {
           ></textarea>
         </form>
       </div>
-        <ArticleComments />
+      <ArticleComments />
     </div>
   );
 };
