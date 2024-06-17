@@ -30,6 +30,7 @@
   justify-content: center;
   align-items: center;
   height: 92vh;
+  width: 100%;
 }
 
 .articles-page-container h3 {
@@ -98,6 +99,7 @@
 
 .articles-section {
   max-height: 800px; 
+  width: 100vw;
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
@@ -130,6 +132,15 @@
 .article-detail-card {
   padding: 50px, 50px, 0px, 50px;
   margin-top: 0;
+}
+
+.create-wrapper {
+  border-radius: 25px;
+  padding: 8px;
+}
+
+.create-wrapper:hover {
+  background-color: #6c757d36;
 }
 
 

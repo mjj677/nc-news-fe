@@ -21,18 +21,19 @@ export const ArticleCard = ({ article }) => {
           <span className="timestamp">{readableDate}</span>
         </div>
       </div>
-      {article.article_img_url && (
-        <Card.Img variant="top" src={article.article_img_url} />
-      )}
-      <Card.Body>
-        <Card.Title>
+      <Card.Title>
           <a
+            id="article-card-title"
             href={"/articles/" + article.article_id}
             onClick={() => handleTitleClick(article.article_id)}
           >
             {article.title}
           </a>
         </Card.Title>
+      {article.article_img_url && (
+        <Card.Img variant="top" src={article.article_img_url} />
+      )}
+      <Card.Body>
       </Card.Body>
     </Card>
   );
