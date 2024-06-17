@@ -1,19 +1,10 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Card";
+import { ConvertDate } from "../utils/convertDate";
 
 export const ArticleCard = ({ article }) => {
-  console.log(article);
 
-  const timestamp = article.created_at;
-  const date = new Date(timestamp);
-
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-
-  const readableDate = date.toLocaleDateString("en-US", options);
+  const readableDate = ConvertDate(article.created_at)  
 
   const handleTitleClick = (article_id) => {
     console.log(article_id);
@@ -23,7 +14,7 @@ export const ArticleCard = ({ article }) => {
     <Card className="article-card">
       <div className="article-card-header">
         <div className="topic-info">
-          <span className="topic-name">{article.topic}</span>
+          <span className="topic-name">n/{article.topic.charAt(0).toUpperCase() + article.topic.slice(1)}</span>
           <span className="dot">•</span>
           <span className="author">{article.author}</span>
           <span className="dot">•</span>

@@ -13,7 +13,7 @@ export const Header = () => {
   useEffect(() => {
     getRequest(`users/${username}`)
       .then((data) => {
-        console.log(data);
+        
       })
       .catch((err) => {
         console.log("Error:", err);
@@ -25,7 +25,16 @@ export const Header = () => {
     <div>
       <Navbar expand="xl" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand>NORTHITT</Navbar.Brand>
+          <Navbar.Brand href="/articles">
+          <img 
+          alt="Northitt logo"
+          src="/reddit-fill-logo.256x256.png"
+          width="30"
+          height="30"
+          className="d-inline-block align-top"
+          />{' '}
+          Northitt
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -34,6 +43,11 @@ export const Header = () => {
               <Nav.Link href="/articles/post">MAKE A POST</Nav.Link>
               <Nav.Link href="/users">USERS</Nav.Link>
             </Nav>
+          </Navbar.Collapse>
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+                Signed in as: User
+            </Navbar.Text>
           </Navbar.Collapse>
         </Container>
       </Navbar>
