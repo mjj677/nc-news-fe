@@ -6,7 +6,7 @@ const apiURL = axios.create({
 
 export const getRequest = (endpoint, params = {}) => {
   return apiURL
-    .get(endpoint, { params })
+    .get(endpoint, {params})
     .then((res) => {
       return res.data;
     })

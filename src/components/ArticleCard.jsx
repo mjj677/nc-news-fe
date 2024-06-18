@@ -33,8 +33,11 @@ export const ArticleCard = ({ article }) => {
       {article.article_img_url && (
         <Card.Img variant="top" src={article.article_img_url} />
       )}
-      <Card.Body>
-      </Card.Body>
+      <div className="topic-info article-card-header">
+        <span className="author">{article.comment_count} comments</span>
+        <span className="dot">•</span>
+        <span className="author">Votes: {article.votes}</span>
+        </div>
     </Card>
   );
 };
