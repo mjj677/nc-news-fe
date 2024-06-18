@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getRequest, patchRequest, postRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
 import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
+import Alert from "react-bootstrap/Alert"
 import { ArticleCommentCard } from "./ArticleCommentCard";
 
 export const ArticleDetail = () => {
@@ -206,9 +206,9 @@ export const ArticleDetail = () => {
         </form>
       </div>
       <section className="article-comments-container">
-        {articleComments.map((comment) => {
+        {articleComments.map((comment, index) => {
           return (
-            <ArticleCommentCard key={comment.comment_id} comment={comment} />
+            <ArticleCommentCard key={comment.comment_id * index} comment={comment} setArticleComments={setArticleComments} setPostMessage={setPostMessage}/>
           );
         })}
       </section>
