@@ -2,12 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown"
 import Button from "react-bootstrap/Button";
 import { UserContext } from "../context/UserContext";
 import { getRequest } from "../utils/api";
 
 export const Header = () => {
   const { username, setUsername } = useContext(UserContext);
+  const [topics, setTopics] = useState([])
   const [profilePic, setProfilePic] = useState(null);
 
   useEffect(() => {
@@ -19,7 +21,16 @@ export const Header = () => {
         console.log("Error:", err);
         throw err;
       });
-  });
+
+    getRequest(`topics`)
+    .then(({Topics}) => {
+        console.log(Topics)
+        setTopics(Topics)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+  }, []);
 
   return (
     <div>
@@ -35,6 +46,11 @@ export const Header = () => {
           />{' '}
           Northitt
           </Navbar.Brand>
+          <NavDropdown title="Category" id="basic-nav-dropdown" className="justify-content-center">
+            {topics.map((topic) => {
+                return <NavDropdown.Item key={topic.slug} href={`/topics/${topic.slug}`}>{topic.slug.charAt(0).toUpperCase() + topic.slug.slice(1)}</NavDropdown.Item>
+            })}
+          </NavDropdown>
           <div className="create-wrapper">
           <Nav.Link href="/articles/post" className="justify-content-center create" >+ CREATE</Nav.Link>
           </div>
