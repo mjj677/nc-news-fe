@@ -31,3 +31,15 @@ export const patchRequest = (endpoint, body) => {
         throw err;
     })
 }
+
+export const postRequest = (endpoint, body) => {
+    return apiURL
+    .post(endpoint, body)
+    .then((res) => {
+            return res.data;
+    })
+    .catch((err) => {
+        console.log("Error:", err);
+        throw err;
+    });
+}
