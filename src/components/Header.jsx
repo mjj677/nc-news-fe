@@ -36,7 +36,7 @@ export const Header = () => {
           Northitt
           </Navbar.Brand>
           <div className="create-wrapper">
-          <Nav.Link href="/articles/post" className="justify-content-center create">+ CREATE</Nav.Link>
+          <Nav.Link href="/articles/post" className="justify-content-center create" >+ CREATE</Nav.Link>
           </div>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

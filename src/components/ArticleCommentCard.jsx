@@ -19,15 +19,9 @@ export const ArticleCommentCard = ({comment}) => {
                     {comment.body}
                 </Card.Text>
                 <div className="votes-wrapper">
-            <Card.Text id="votes-text">
-              VOTES: {comment.votes}
-            </Card.Text>
-            <Card.Text>
               <button id="upvote-button">👍</button>
-            </Card.Text>
-            <Card.Text>
+              {comment.votes}
               <button id="downvote-button">👎</button>
-            </Card.Text>
           </div>
             </Card.Body>
         </Card>
