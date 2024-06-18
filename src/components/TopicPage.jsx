@@ -11,8 +11,22 @@ export const TopicPage = () => {
   const [sortBy, setSortBy] = useState("title");
   const [order, setOrder] = useState("desc");
   const [searchParams, setSearchParams] = useSearchParams();
+  const [topicExists, setTopicExists] = useState(false)
 
   useEffect(() => {
+
+    const getTopics = async () => {
+        try {
+            const {Topics} = await getRequest("topics")
+            const exists = Topics.filter((topic) => topic.slug === articleTopic)
+            if (!exists.length) setTopicExists(false)
+            else setTopicExists(true)
+        } catch(err) {
+            console.log("I'm here")
+        }
+    }
+
+
     const fetchTopicArticles = async () => {
       try {
         const params = {
@@ -21,6 +35,7 @@ export const TopicPage = () => {
         setTopicArticles(articles)
       } catch (err) {}
     };
+    getTopics();
     fetchTopicArticles()
   }, []);
 
@@ -49,49 +64,47 @@ export const TopicPage = () => {
   const handleOrderChange = (ord) => {
     setOrder(ord);
   }
-  return (
-    <div className="articles-page-container">
-      <h3>n/{topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
-      <div className="query-controls">
-        <Dropdown id="sort-by-dropdown" onSelect={handleSortChange}>
-          <Dropdown.Toggle variant="secondary">Sort by</Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="created_at">Date</Dropdown.Item>
-            <Dropdown.Item eventKey="comment_count">
-              Comment count
-            </Dropdown.Item>
-            <Dropdown.Item eventKey="votes">Votes</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown id="order-by-dropdown" onSelect={handleOrderChange}>
-          <Dropdown.Toggle variant="secondary">Order</Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="asc">Ascending</Dropdown.Item>
-            <Dropdown.Item eventKey="desc">Descending</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-      <div className="featured-articles-container">
-        <section className="articles-section">
-        <div className="query-text">
-          <p id="sorted-by-text">
-            Sorted by:{" "}
-            {sortBy === "created_at"
-              ? "Date"
-              : sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}{" "}
-          </p>
-          <p id="order-by-text">
-            Order:{" "}
-            {order
-              ? order.charAt(0).toUpperCase() + order.slice(1) + "ending"
-              : "Descending"}
-          </p>
-          </div>
-          {topicArticles.map((article) => {
-            return <ArticleCard key={article.article_id} article={article} />;
-          })}
-        </section>
-      </div>
+  return (topicExists ? (<div className="articles-page-container">
+    <h3>n/{topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
+    <div className="query-controls">
+      <Dropdown id="sort-by-dropdown" onSelect={handleSortChange}>
+        <Dropdown.Toggle variant="secondary">Sort by</Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item eventKey="created_at">Date</Dropdown.Item>
+          <Dropdown.Item eventKey="comment_count">
+            Comment count
+          </Dropdown.Item>
+          <Dropdown.Item eventKey="votes">Votes</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      <Dropdown id="order-by-dropdown" onSelect={handleOrderChange}>
+        <Dropdown.Toggle variant="secondary">Order</Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item eventKey="asc">Ascending</Dropdown.Item>
+          <Dropdown.Item eventKey="desc">Descending</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
-  );
+    <div className="featured-articles-container">
+      <section className="articles-section">
+      <div className="query-text">
+        <p id="sorted-by-text">
+          Sorted by:{" "}
+          {sortBy === "created_at"
+            ? "Date"
+            : sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}{" "}
+        </p>
+        <p id="order-by-text">
+          Order:{" "}
+          {order
+            ? order.charAt(0).toUpperCase() + order.slice(1) + "ending"
+            : "Descending"}
+        </p>
+        </div>
+        {topicArticles.map((article) => {
+          return <ArticleCard key={article.article_id} article={article} />;
+        })}
+      </section>
+    </div>
+  </div>) : (<h1 className="error-message"> ERROR 404: TOPIC NOT FOUND </h1>));
 };
