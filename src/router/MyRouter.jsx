@@ -6,11 +6,11 @@ import {ListArticles, ArticleDetail, PostArticle, UserList, User, TopicPage} fro
 
 export const MyRoutes = () => {
 
-    // const {username} = useContext(UserContext)
+    const {username} = useContext(UserContext)
 
-    // if (!username) {
-    //     return <Navigate to="/" />;
-    // }
+    if (!username) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <Routes>

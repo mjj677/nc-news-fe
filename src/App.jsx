@@ -7,6 +7,11 @@ import { MyRoutes } from "./router/MyRouter";
 
 function App() {
 
+  const { username } = useContext(UserContext);
+
+  if (!username) {
+    return <LoginUser />;
+  }
 
   return (
     <>

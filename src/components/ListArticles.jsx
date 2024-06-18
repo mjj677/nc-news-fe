@@ -3,6 +3,7 @@ import { getRequest } from "../utils/api";
 import { ArticleCard } from "./ArticleCard";
 import { useSearchParams } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import loadingGif from "/loading.gif";
 
 export const ListArticles = () => {
   const [articlesReceived, setArticlesReceived] = useState([]);
@@ -10,19 +11,23 @@ export const ListArticles = () => {
   const [sortBy, setSortBy] = useState("items");
   const [order, setOrder] = useState("desc");
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getRequest("articles")
-      .then(({ articles }) => {
-        console.log(articles);
+    const fetchInitialArticles = async () => {
+      setLoading(true);
+      try {
+        const { articles } = await getRequest("articles");
         setMessage("");
         setArticlesReceived(articles);
-      })
-      .catch((err) => {
+      } catch (err) {
         setMessage("Error fetching articles. Please refresh.");
         console.log("Error:", err);
-        throw err;
-      });
+      }
+      setLoading(false);
+    };
+
+    fetchInitialArticles();
   }, []);
 
   const fetchArticles = async (sort = sortBy, ord = order) => {
@@ -34,7 +39,9 @@ export const ListArticles = () => {
       console.log(queryParams);
       const { articles } = await getRequest("articles", queryParams);
       setArticlesReceived(articles);
-    } catch (err) {}
+    } catch (err) {
+      console.log("Error fetching articles:", err);
+    }
   };
 
   useEffect(() => {
@@ -49,6 +56,14 @@ export const ListArticles = () => {
   const handleOrderChange = (ord) => {
     setOrder(ord);
   };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
+  }
 
   return (
     <div className="articles-page-container">
@@ -75,18 +90,18 @@ export const ListArticles = () => {
       <div className="featured-articles-container">
         <section className="articles-section">
           <div className="query-text">
-          <p id="sorted-by-text">
-            Sorted by:{" "}
-            {sortBy === "created_at"
-              ? "Date"
-              : sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}{" "}
-          </p>
-          <p id="order-by-text">
-            Order:{" "}
-            {order
-              ? order.charAt(0).toUpperCase() + order.slice(1) + "ending"
-              : "Descending"}
-          </p>
+            <p id="sorted-by-text">
+              Sorted by:{" "}
+              {sortBy === "created_at"
+                ? "Date"
+                : sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}{" "}
+            </p>
+            <p id="order-by-text">
+              Order:{" "}
+              {order
+                ? order.charAt(0).toUpperCase() + order.slice(1) + "ending"
+                : "Descending"}
+            </p>
           </div>
           {articlesReceived.map((article) => {
             return <ArticleCard key={article.article_id} article={article} />;

@@ -1,3 +1,21 @@
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.loading-gif {
+  display: block;
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+}
+
+
+
 .error-message {
   display: flex;
   justify-content: center;
@@ -6,38 +24,52 @@
 
 .login-page-container {
   padding: 20px;
-  margin-top: 15em;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-height: 600px;
+  max-height: 100vh;
 }
 
-.login-form {
+.login-page-content {
+  margin-top: 12em;
+  text-align: center;
+}
+
+#username-input::placeholder {
+  text-align: center;
+}
+
+.login-page-content h3 {
+  justify-content: center;
+}
+
+
+/* .login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
   text-align: center;
-}
+} */
 
-.username-container {
+/* .username-container {
   padding-bottom: 10px;
 }
 
 #username-text {
   padding-right: 20px;
-}
+} */
 
 .articles-page-container {
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 92vh;
-  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
 
 .articles-page-container h3 {
   margin-top: 3em;
@@ -48,7 +80,7 @@
   display: flex;
   align-content: center;
   justify-content: space-evenly;
-  max-width: 850px;
+  max-width: 600px;
 }
 
 .query-controls {
@@ -73,10 +105,13 @@
 
 
 .article-card {
-  margin: 20px;
+  width: 90%;;
+  margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: calc(100% - 40px);
+  box-sizing: border-box;
 }
 
 .article-card-header {
@@ -120,11 +155,14 @@
 }
 
 .articles-section {
-  max-height: 800px; 
+  max-width: 1600px;
+  max-height: 750px; 
+  height: 100vh;
   width: 100vw;
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .articles-section::-webkit-scrollbar {
@@ -232,6 +270,10 @@
   margin-top: 20px;
 }
 
+#bin-icon {
+  height: 30px;
+}
+
 .votes-wrapper:hover {
   background-color: #6c757d36;
 }
@@ -248,6 +290,12 @@
 
 #delete-comment-btn {
   scale: 0.75;
+  background-color: white;
+  border: none;
+}
+
+#delete-comment-btn:hover {
+  transform: scale(1.1);
 }
 
 #upvote-button {
@@ -310,7 +358,29 @@
 .article-comments-container {
   max-height: 176px; 
   overflow-y: auto; 
+  position: relative;
+  padding-bottom: 20px;
 }
+
+.article-comments-container:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: fade-in-out 5s infinite;
+}
+
+@keyframes fade-in-out {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.8; }
+}
+
 
 .article-comments-container::-webkit-scrollbar {
   width: 10px;
