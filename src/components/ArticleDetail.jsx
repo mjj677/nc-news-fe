@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getRequest, patchRequest, postRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
 import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert"
+import Alert from "react-bootstrap/Alert";
 import { ArticleCommentCard } from "./ArticleCommentCard";
 
 export const ArticleDetail = () => {
@@ -16,16 +16,22 @@ export const ArticleDetail = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [commentBody, setCommentBody] = useState("");
   const [articleComments, setArticleComments] = useState([]);
+  const [articleExists, setArticleExists] = useState(true);
+  const [articleHasComments, setArticleHasComments] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchArticleAndAuthor = async () => {
       try {
+        setLoading(true)
         const { article } = await getRequest(`articles/${article_id}`);
+        setArticleExists(true);
         setArticleReceived(article[0]);
-
         const { user } = await getRequest(`users/${article[0].author}`);
         setArticleAuthorInfo(user);
+        setLoading(false)
       } catch (err) {
+        setArticleExists(false);
         setMessage("Error locating article.");
         console.log("Error:", err);
       }
@@ -37,9 +43,13 @@ export const ArticleDetail = () => {
           `articles/${article_id}/comments`,
           { limit: 100 }
         );
+        if (article_comments.length) setArticleHasComments(true)
         const reversedOrderComments = article_comments.reverse();
+setArticleExists(true);
         setArticleComments(reversedOrderComments);
       } catch (err) {
+        setArticleHasComments(false)
+        setArticleExists(false);
         console.log("Error:", err);
         throw err;
       }
@@ -56,8 +66,10 @@ export const ArticleDetail = () => {
         body
       );
       setArticleReceived(patched_article);
+      setArticleExists(true);
       setUserVote(inc_votes === userVote ? 0 : inc_votes);
     } catch (err) {
+      setArticleExists(false);
       setMessage("Error locating article.");
       console.log("Error:", err);
     }
@@ -91,6 +103,7 @@ export const ArticleDetail = () => {
         );
         console.log(posted_comment);
         setPostMessage("Comment posted!");
+        setArticleHasComments(true)
         setTimeout(() => setPostMessage(""), 2000);
         setArticleComments((prevComments) => {
           return [posted_comment, ...prevComments];
@@ -108,7 +121,9 @@ export const ArticleDetail = () => {
 
   const readableDate = ConvertDate(articleReceived.article_id);
 
-  return (
+
+  console.log(articleHasComments)
+  return articleExists ? (
     <div className="article-detail-container">
       <Card className="article-detail-card">
         <div className="article-detail-card-header">
@@ -205,13 +220,22 @@ export const ArticleDetail = () => {
           </div>
         </form>
       </div>
-      <section className="article-comments-container">
+      {articleHasComments ? (<section className="article-comments-container">
         {articleComments.map((comment, index) => {
           return (
-            <ArticleCommentCard key={comment.comment_id * index} comment={comment} setArticleComments={setArticleComments} setPostMessage={setPostMessage}/>
+            <ArticleCommentCard
+              key={comment.comment_id * index}
+              comment={comment}
+              articleComments={articleComments}
+              setArticleComments={setArticleComments}
+              setPostMessage={setPostMessage}
+              setArticleHasComments={setArticleHasComments}
+            />
           );
         })}
-      </section>
+      </section>) : (<p>No comments to display here...</p>)}
     </div>
+  ) : (
+    <h1 className="error-message"> ERROR 404: ARTICLE NOT FOUND </h1>
   );
 };

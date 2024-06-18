@@ -21,7 +21,7 @@ export const MyRoutes = () => {
             <Route path="/articles/post" element={< PostArticle />} />
             <Route path="/users" element={< UserList />} />
             <Route path="/users/:username" element={< User />} />
-            <Route path="*" element={<div> ERROR: 404 NOT FOUND </div>} />
+            <Route path="*" element={<h1 className="error-message"> ERROR 404: PAGE NOT FOUND </h1>} />
         </Routes>
     )
 

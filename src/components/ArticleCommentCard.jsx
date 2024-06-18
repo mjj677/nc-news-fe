@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button"
 import { ConvertDate } from "../utils/convertDate";
 import { getRequest, deleteRequest } from "../utils/api";
 
-export const ArticleCommentCard = ({ comment, setArticleComments, setPostMessage }) => {
+export const ArticleCommentCard = ({ comment, articleComments, setArticleComments, setPostMessage, setArticleHasComments }) => {
   const username = "jessjelly";
   const {comment_id} = comment
 
@@ -18,6 +18,7 @@ export const ArticleCommentCard = ({ comment, setArticleComments, setPostMessage
         setArticleComments((prevComments) => {
             return prevComments.filter((comment) => comment.comment_id !== comment_id)
         })
+        if (articleComments.length === 1) setArticleHasComments(false)
         setTimeout(() => setPostMessage(""), 2000)
     } catch (err) {
         console.log("Error:", err)
