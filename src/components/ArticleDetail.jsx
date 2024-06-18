@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getRequest, patchRequest, postRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import { ArticleCommentCard } from "./ArticleCommentCard";
+import { UserContext } from "../context/UserContext";
+import loadingGif from "/loading.gif";
 
 export const ArticleDetail = () => {
   const { article_id } = useParams();
+  const { username } = useContext(UserContext);
   const [articleReceived, setArticleReceived] = useState({});
   const [articleAuthorInfo, setArticleAuthorInfo] = useState({});
   const [message, setMessage] = useState("");
@@ -17,23 +20,24 @@ export const ArticleDetail = () => {
   const [commentBody, setCommentBody] = useState("");
   const [articleComments, setArticleComments] = useState([]);
   const [articleExists, setArticleExists] = useState(true);
-  const [articleHasComments, setArticleHasComments] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [articleHasComments, setArticleHasComments] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticleAndAuthor = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const { article } = await getRequest(`articles/${article_id}`);
         setArticleExists(true);
         setArticleReceived(article[0]);
         const { user } = await getRequest(`users/${article[0].author}`);
         setArticleAuthorInfo(user);
-        setLoading(false)
       } catch (err) {
         setArticleExists(false);
         setMessage("Error locating article.");
         console.log("Error:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,12 +47,12 @@ export const ArticleDetail = () => {
           `articles/${article_id}/comments`,
           { limit: 100 }
         );
-        if (article_comments.length) setArticleHasComments(true)
+        if (article_comments.length) setArticleHasComments(true);
         const reversedOrderComments = article_comments.reverse();
-setArticleExists(true);
+        setArticleExists(true);
         setArticleComments(reversedOrderComments);
       } catch (err) {
-        setArticleHasComments(false)
+        setArticleHasComments(false);
         setArticleExists(false);
         console.log("Error:", err);
         throw err;
@@ -82,7 +86,7 @@ setArticleExists(true);
   const handleBlur = () => {
     setTimeout(() => {
       setIsFocused(false);
-    }, 1);
+    }, 10);
   };
 
   const handleBodyChange = (e) => {
@@ -94,16 +98,15 @@ setArticleExists(true);
     if (commentBody !== "") {
       try {
         const body = {
-          username: "jessjelly",
+          username,
           body: commentBody,
         };
         const { posted_comment } = await postRequest(
           `/articles/${articleReceived.article_id}/comments`,
           body
         );
-        console.log(posted_comment);
         setPostMessage("Comment posted!");
-        setArticleHasComments(true)
+        setArticleHasComments(true);
         setTimeout(() => setPostMessage(""), 2000);
         setArticleComments((prevComments) => {
           return [posted_comment, ...prevComments];
@@ -121,8 +124,14 @@ setArticleExists(true);
 
   const readableDate = ConvertDate(articleReceived.article_id);
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
+  }
 
-  console.log(articleHasComments)
   return articleExists ? (
     <div className="article-detail-container">
       <Card className="article-detail-card">
@@ -220,20 +229,24 @@ setArticleExists(true);
           </div>
         </form>
       </div>
-      {articleHasComments ? (<section className="article-comments-container">
-        {articleComments.map((comment, index) => {
-          return (
-            <ArticleCommentCard
-              key={comment.comment_id * index}
-              comment={comment}
-              articleComments={articleComments}
-              setArticleComments={setArticleComments}
-              setPostMessage={setPostMessage}
-              setArticleHasComments={setArticleHasComments}
-            />
-          );
-        })}
-      </section>) : (<p>No comments to display here...</p>)}
+      {articleHasComments ? (
+        <section className="article-comments-container">
+          {articleComments.map((comment, index) => {
+            return (
+              <ArticleCommentCard
+                key={comment.comment_id * index}
+                comment={comment}
+                articleComments={articleComments}
+                setArticleComments={setArticleComments}
+                setPostMessage={setPostMessage}
+                setArticleHasComments={setArticleHasComments}
+              />
+            );
+          })}
+        </section>
+      ) : (
+        <p>No comments to display here...</p>
+      )}
     </div>
   ) : (
     <h1 className="error-message"> ERROR 404: ARTICLE NOT FOUND </h1>
