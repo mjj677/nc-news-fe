@@ -218,6 +218,16 @@
   cursor: pointer;
 }
 
+.delete-comment-btn-wrapper {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+#delete-comment-btn {
+  scale: 0.75;
+}
+
 #upvote-button {
   height: 20px;
   background: none;

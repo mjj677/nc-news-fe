@@ -43,3 +43,19 @@ export const postRequest = (endpoint, body) => {
         throw err;
     });
 }
+
+export const deleteRequest = (endpoint) => {
+	return apiURL
+		.delete(endpoint)
+		.then((res) => {
+			if (res.status === 204) {
+				return "Deleted"
+			} else {
+				throw new Error(`Request failed with status ${res.status}`);
+			}
+		})
+		.catch((err) => {
+			console.log("Error:", err);
+			throw err;
+		});
+};
