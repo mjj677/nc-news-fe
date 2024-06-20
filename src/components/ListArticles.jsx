@@ -8,7 +8,7 @@ import loadingGif from "/loading.gif";
 export const ListArticles = () => {
   const [articlesReceived, setArticlesReceived] = useState([]);
   const [message, setMessage] = useState("");
-  const [sortBy, setSortBy] = useState("items");
+  const [sortBy, setSortBy] = useState("Title");
   const [order, setOrder] = useState("desc");
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);

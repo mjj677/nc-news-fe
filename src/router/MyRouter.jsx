@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate} from "react-router-dom"
 import {useContext} from "react"
 import { UserContext } from "../context/UserContext"
-import {ListArticles, ArticleDetail, PostArticle, UserList, User, TopicPage} from '../components/index'
+import {ListArticles, ArticleDetail, PostArticle, UserList, TopicPage, AboutPage, UserPosts} from '../components/index'
 
 
 export const MyRoutes = () => {
@@ -20,7 +20,8 @@ export const MyRoutes = () => {
             <Route path="/articles/:article_id" element={< ArticleDetail />} />
             <Route path="/articles/post" element={< PostArticle />} />
             <Route path="/users" element={< UserList />} />
-            <Route path="/users/:username" element={< User />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/:username/posts" element={<UserPosts />} />
             <Route path="*" element={<h1 className="error-message"> ERROR 404: PAGE NOT FOUND </h1>} />
         </Routes>
     )

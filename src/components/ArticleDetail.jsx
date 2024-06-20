@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getRequest, patchRequest, postRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
 import Card from "react-bootstrap/Card";
@@ -7,9 +7,11 @@ import Alert from "react-bootstrap/Alert";
 import { ArticleCommentCard } from "./ArticleCommentCard";
 import { UserContext } from "../context/UserContext";
 import loadingGif from "/loading.gif";
+import commentIcon from "/comment.png"
 
 export const ArticleDetail = () => {
   const { article_id } = useParams();
+  const navigate = useNavigate();
   const { username } = useContext(UserContext);
   const [articleReceived, setArticleReceived] = useState({});
   const [articleAuthorInfo, setArticleAuthorInfo] = useState({});
@@ -122,6 +124,10 @@ export const ArticleDetail = () => {
     }
   };
 
+  const handleProfileClick = () => {
+    navigate(`/users/${articleAuthorInfo.username}`)
+  }
+
   const readableDate = ConvertDate(articleReceived.article_id);
 
   if (loading) {
@@ -140,6 +146,7 @@ export const ArticleDetail = () => {
             {articleAuthorInfo.avatar_url && (
               <div className="profile-picture-container">
                 <img
+                  onClick={handleProfileClick}
                   id="article-detail-profile-picture"
                   src={articleAuthorInfo.avatar_url}
                 />
@@ -148,9 +155,11 @@ export const ArticleDetail = () => {
             <div className="article-detail-text-container">
               {articleReceived.topic && (
                 <span className="topic-name">
+                  <a id="article-detail-topic" href={`/topics/${articleReceived.topic}`}>
                   n/
                   {articleReceived.topic.charAt(0).toUpperCase() +
                     articleReceived.topic.slice(1)}
+                    </a>
                 </span>
               )}
               <span className="dot">•</span>
@@ -170,6 +179,7 @@ export const ArticleDetail = () => {
             {articleReceived.title}
           </Card.Title>
           <Card.Text id="article-detail-body">{articleReceived.body}</Card.Text>
+          <section className="article-detail-stat-wrapper">
           <div className="votes-wrapper">
             <button
               onClick={() => voteArticle(userVote === 1 ? 0 : 1)}
@@ -188,6 +198,11 @@ export const ArticleDetail = () => {
               👎
             </button>
           </div>
+          <div className="comments-wrapper">
+              {articleComments.length}
+              <img alt="Comment box icon" id="list-comment-icon" src={commentIcon} />
+          </div>
+          </section>
         </Card.Body>
       </Card>
       <div className="post-comment-container">
