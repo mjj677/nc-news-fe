@@ -91,10 +91,11 @@ export const TopicPage = () => {
     return <h1 className="error-message"> ERROR 404: TOPIC NOT FOUND </h1>;
   }
 
+  console.log(topicExists)
   return (
     <div className="articles-page-container">
       <h3>n/{topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
-    
+      <h4>{topicExists[0].description}</h4>
 
         {(topicExists && !topicArticles.length) ? (<p>No topics to display here...</p>) : (   
           <>

@@ -48,7 +48,7 @@ export const ArticleCommentCard = ({
       </div>
       <Card.Body>
         <Card.Text>{comment.body}</Card.Text>
-        <div className="votes-wrapper">
+        <div className="comment-votes-wrapper">
           <button id="upvote-button">👍</button>
           {comment.votes}
           <button id="downvote-button">👎</button>
