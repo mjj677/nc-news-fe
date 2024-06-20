@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { UserCard } from "./UserCard";
 import loadingGif from "/loading.gif";
+import robot from "/robot.png"
 
 export const UserPosts = () => {
   const { username } = useContext(UserContext);
@@ -59,11 +60,14 @@ export const UserPosts = () => {
       <div className="user-posts-card">
         <UserCard user={user} articles={articles} />
       </div>
-      <section className="articles-section">
+      {filteredArticles.length ? (   <section className="articles-section">
         {filteredArticles.map((article) => {
           return <ArticleCard key={article.title} article={article} />;
         })}
-      </section>
+      </section>) : (<div id="no-posts-wrapper">
+        <h4 id="has-not-posted">u/{username} hasn't posted yet</h4>
+        <img id="not-found-robot" src={robot} alt="Robot looking at the sky"/>
+        </div>)}
     </div>
   );
 };

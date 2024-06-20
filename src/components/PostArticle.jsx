@@ -22,6 +22,7 @@ export const PostArticle = () => {
   });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isImgUrlValid, setIsImgUrlValid] = useState(false)
 
   useEffect(() => {
     setLoading(true);
@@ -37,6 +38,13 @@ export const PostArticle = () => {
 
     fetchTopics();
   }, []);
+
+  const validateImgUrl = (url) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => setIsImgUrlValid(true);
+    img.onerror = () => setIsImgUrlValid(false);
+  }
 
   const handleSelect = (eventKey) => {
     if (eventKey === "clearSelection") {
@@ -63,6 +71,10 @@ export const PostArticle = () => {
       ...article,
       [name]: value,
     });
+
+    if (name === "article_img_url") {
+        validateImgUrl(value)
+    }
   };
 
   const handleNewCategoryChange = (e) => {
@@ -208,6 +220,9 @@ export const PostArticle = () => {
             placeholder="Image URL*"
             onChange={handleChange}
           ></input>
+          {isImgUrlValid && (<div className="image-preview">
+            <img id="preview-image" src={article.article_img_url} alt="Article image preview" />
+          </div>)}
           <Button id="post-article-button" type="submit" disabled={!article.title || !article.body || !article.topic || !article.article_img_url}>
             Post
           </Button>

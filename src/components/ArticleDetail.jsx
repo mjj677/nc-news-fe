@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getRequest, patchRequest, postRequest } from "../utils/api";
 import { ConvertDate } from "../utils/convertDate";
-import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import { ArticleCommentCard } from "./ArticleCommentCard";
 import { UserContext } from "../context/UserContext";
+import Card from "react-bootstrap/Card";
+import Alert from "react-bootstrap/Alert";
+import Modal from "react-bootstrap/Modal";
 import loadingGif from "/loading.gif";
-import commentIcon from "/comment.png"
+import commentIcon from "/comment.png";
 
 export const ArticleDetail = () => {
   const { article_id } = useParams();
@@ -23,7 +24,10 @@ export const ArticleDetail = () => {
   const [articleComments, setArticleComments] = useState([]);
   const [articleExists, setArticleExists] = useState(true);
   const [articleHasComments, setArticleHasComments] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const handleImageClick = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   useEffect(() => {
     const fetchArticleAndAuthor = async () => {
@@ -125,8 +129,8 @@ export const ArticleDetail = () => {
   };
 
   const handleProfileClick = () => {
-    navigate(`/users/${articleAuthorInfo.username}`)
-  }
+    navigate(`/users/${articleAuthorInfo.username}`);
+  };
 
   const readableDate = ConvertDate(articleReceived.article_id);
 
@@ -155,11 +159,14 @@ export const ArticleDetail = () => {
             <div className="article-detail-text-container">
               {articleReceived.topic && (
                 <span className="topic-name">
-                  <a id="article-detail-topic" href={`/topics/${articleReceived.topic}`}>
-                  n/
-                  {articleReceived.topic.charAt(0).toUpperCase() +
-                    articleReceived.topic.slice(1)}
-                    </a>
+                  <a
+                    id="article-detail-topic"
+                    href={`/topics/${articleReceived.topic}`}
+                  >
+                    n/
+                    {articleReceived.topic.charAt(0).toUpperCase() +
+                      articleReceived.topic.slice(1)}
+                  </a>
                 </span>
               )}
               <span className="dot">•</span>
@@ -174,37 +181,51 @@ export const ArticleDetail = () => {
             variant="top"
             id="article-detail-img"
             src={articleReceived.article_img_url}
+            onClick={handleImageClick}
+            style={{cursor: "pointer"}}
           />
           <Card.Title id="article-detail-title">
             {articleReceived.title}
           </Card.Title>
           <Card.Text id="article-detail-body">{articleReceived.body}</Card.Text>
           <section className="article-detail-stat-wrapper">
-          <div className="votes-wrapper">
-            <button
-              onClick={() => voteArticle(userVote === 1 ? 0 : 1)}
-              id="upvote-button"
-              disabled={userVote === 1}
-            >
-              👍
-              {/* <img alt="red upvote button" src="/upvote-button-fill.png" id="upvote-button"/> */}
-            </button>
-            {articleReceived.votes}
-            <button
-              onClick={() => voteArticle(userVote === -1 ? 0 : -1)}
-              id="downvote-button"
-              disabled={userVote === -1}
-            >
-              👎
-            </button>
-          </div>
-          <div className="comments-wrapper">
+            <div className="votes-wrapper">
+              <button
+                onClick={() => voteArticle(userVote === 1 ? 0 : 1)}
+                id="upvote-button"
+                disabled={userVote === 1}
+              >
+                👍
+                {/* <img alt="red upvote button" src="/upvote-button-fill.png" id="upvote-button"/> */}
+              </button>
+              {articleReceived.votes}
+              <button
+                onClick={() => voteArticle(userVote === -1 ? 0 : -1)}
+                id="downvote-button"
+                disabled={userVote === -1}
+              >
+                👎
+              </button>
+            </div>
+            <div className="comments-wrapper">
               {articleComments.length}
-              <img alt="Comment box icon" id="list-comment-icon" src={commentIcon} />
-          </div>
+              <img
+                alt="Comment box icon"
+                id="list-comment-icon"
+                src={commentIcon}
+              />
+            </div>
           </section>
         </Card.Body>
       </Card>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+              <Modal.Body id="modal">
+                <img src={articleReceived.article_img_url}
+                alt="Enlarged view of article image"
+                style={{width: "100%"}}/>
+
+              </Modal.Body>
+      </Modal>
       <div className="post-comment-container">
         <form className="comment-form" onSubmit={handleSubmit}>
           <div style={{ position: "relative" }}>
