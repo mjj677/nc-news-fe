@@ -4,6 +4,7 @@ import { getRequest } from "../utils/api";
 import { ArticleCard } from "./ArticleCard";
 import Dropdown from "react-bootstrap/Dropdown";
 import loadingGif from "/loading.gif";
+import robotIcon from "/robot.png"
 
 export const TopicPage = () => {
   const { topic } = useParams();
@@ -97,7 +98,10 @@ export const TopicPage = () => {
       <h3>n/{topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
       <h4>{topicExists[0].description}</h4>
 
-        {(topicExists && !topicArticles.length) ? (<p>No topics to display here...</p>) : (   
+        {(topicExists && !topicArticles.length) ? (<>
+          <p id="no-topics-to-display">No topics to display here...</p>
+          <img id="not-found-robot-topics" src={robotIcon} alt="Robot not found icon" />
+          </>) : (   
           <>
             <div className="query-controls">
             <Dropdown id="sort-by-dropdown" onSelect={handleSortChange}>

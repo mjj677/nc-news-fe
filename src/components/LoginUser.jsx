@@ -17,9 +17,11 @@ export const LoginUser = () => {
   const [inputValue, setInputValue] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [usersLoading, setUsersLoading] = useState(true)
 
   useEffect(() => {
     const fetchUsers = async () => {
+        setUsersLoading(true)
       try {
         const {users} = await getRequest("users")
         setUsers(users);
@@ -29,6 +31,7 @@ export const LoginUser = () => {
         console.log("Error:", err);
         throw err;
       }
+      setUsersLoading(false)
     };
 
     fetchUsers();
@@ -91,7 +94,7 @@ export const LoginUser = () => {
                   className="scrollable-dropdown-menu"
                   flip={false}
                 >
-                  {users.map((user) => {
+                  {usersLoading ? ( <Dropdown.Item disabled>Fetching users...</Dropdown.Item>) : (users.map((user) => {
                     return (
                       <Dropdown.Item
                         key={user.username}
@@ -100,7 +103,7 @@ export const LoginUser = () => {
                         {user.username}
                       </Dropdown.Item>
                     );
-                  })}
+                  }))}
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -110,3 +113,16 @@ export const LoginUser = () => {
     </div>
   );
 };
+
+// {loading ? (
+//     <Dropdown.Item disabled>Fetching categories...</Dropdown.Item>
+//   ) : (
+//     receivedCategories.map((category) => {
+//       return (
+//         <Dropdown.Item key={category.slug} eventKey={category.slug}>
+//           {category.slug.charAt(0).toUpperCase() +
+//             category.slug.slice(1)}
+//         </Dropdown.Item>
+//       );
+//     })
+//   )}

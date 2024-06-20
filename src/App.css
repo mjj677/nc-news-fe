@@ -157,7 +157,8 @@
 }
 
 .articles-page-container {
-  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -165,8 +166,26 @@
   width: 100%;
 }
 
+.articles-page-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.articles-page-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.articles-page-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
 .articles-page-container h3 {
   margin-top: 1em;
+}
+
+.articles-page-container h4 {
+  text-align: center;
+  margin-bottom: -1em;
 }
 
 .query-controls {
@@ -195,6 +214,10 @@
 
 #sort-by-dropdown {
   margin-right: 20px;
+}
+
+#not-found-robot-topics {
+  height: 200px;
 }
 
 
@@ -273,10 +296,25 @@
   color: #333;
 }
 
+#no-topics-to-display {
+  margin-top: 4em;
+}
+
+
+
+#not-found-robot {
+  height: 200px;
+  margin-left: 50px;
+}
+
+#no-posts-wrapper {
+  justify-content: center;
+}
+
 .articles-section {
   max-width: 1600px;
-  max-height: 750px; 
-  overflow-y: auto;
+  max-height: calc(100vh - 220px);
+  /* overflow-y: auto; */
   /* border: 1px solid #ccc; */
   padding: 10px;
   box-sizing: border-box;
@@ -315,7 +353,8 @@
 }
 
 .article-detail-container {
-  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+  max-width: calc(100vw - 10px);
   /* margin-top: 5em; */
   /* border: 1px solid black; */
   display: flex;
@@ -334,6 +373,19 @@
 #article-detail-body {
   height: 100px;
   overflow-y: scroll;
+}
+
+#article-detail-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+#article-detail-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#article-detail-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }
 
 .article-detail-card {
@@ -705,16 +757,68 @@
 }
 
 .user-posts-card {
-  margin-top: 3em;
+  margin-top: 2em;
   margin-bottom: 2em;
 }
 
+.about-page-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10em;
+}
+
+#about-card {
+  padding: 25px;
+  width: 24em;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.github-link-wrapper {
+margin-top: 20px;
+}
+
+#github-icon {
+  height: 50px;
+}
+
+#github-link {
+  text-decoration: none;
+  color: purple;
+  margin-left: 20px;
+}
+
+#preview-image {
+  height: 100px;
+  margin-bottom: 20px;
+  border: 5px solid black;
+}
+
+#modal {
+  background-color: rgba(0, 0, 0, 0.443);
+}
+
+
+
 @media (max-width: 600px) {
-  .articles-section {
-    max-height: 680px;
-  }
 
   .post-article-form-container {
-    margin-top: 5em;
+    margin-top: 4em;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .post-article-form-container {
+    margin-top: 4em;
+  }
+
+  .about-page-container {
+    margin-top: 7em;
+  }
+
+  #about-card {
+    width: 22em;
   }
 }
